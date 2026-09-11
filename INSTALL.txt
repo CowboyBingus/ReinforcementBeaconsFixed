@@ -1,0 +1,32 @@
+Reinforcement Beacons Fixed — data-v3 prerelease
+
+Requires Bingus Shared Loader loader-v2 / API 1.
+Supported: Steam build 24826606 / EXE 1.8.45317.0.
+
+1. Close Helldivers 2.
+2. Remove or replace the previous Reinforcement Beacon Fix / Reinforcement
+   Beacons Fixed entry in HDArsenal or HD2MM. Use only one manager.
+3. Import ReinforcementBeaconsFixed.zip and BingusSharedLoader.zip.
+   The loader is a separate download; managers do not install it automatically.
+4. Enable both packages, then Purge and Deploy. Importing alone can leave
+   the previous version's archive in the game directory.
+5. Launch the game. Check %LOCALAPPDATA%/ReinforcementBeaconsFixed.log for
+   data-v3 and the correction count.
+
+Use the current module-only Bounce and Hellpod Steering packages if installed.
+The renamed packages retain their previous manager GUIDs and Lua resource names.
+Do not install renamed and older copies together.
+
+Each diver needs this mod and the loader on their own client. A host-only
+installation does not correct an unmodded teammate's reinforcement.
+
+The mod changes only your queued reinforcement X/Y. Solo calls target the
+original sampled position; teammate calls target the selected beacon.
+Height, countdown and descent remain native. Three prior solo tests confirmed
+queue correction. Data-v3's multiplayer repair passes offline tests and still
+needs installed verification. A small solo landing offset remains unresolved.
+
+To uninstall, disable this mod and Purge/Deploy. Keep Bingus Shared Loader
+enabled for any remaining dependent mods. No executable-memory patch is installed.
+
+Developed with assistance from GPT-6 Astra.

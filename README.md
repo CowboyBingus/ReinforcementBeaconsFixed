@@ -2,7 +2,10 @@
 
 # Reinforcement Beacons Fixed
 
-[Download data-v3](https://github.com/CowboyBingus/ReinforcementBeaconsFixed/releases/tag/data-v3) · [Required Bingus Shared Loader](https://github.com/CowboyBingus/BingusSharedLoader/releases/tag/loader-v2)
+> [!IMPORTANT]
+> **Bingus Shared Loader is now a separate required download.** [Download the latest loader](https://github.com/CowboyBingus/BingusSharedLoader/releases/latest), import `BingusSharedLoader.zip` into Arsenal or HD2MM, and enable it alongside Reinforcement Beacons Fixed before deploying. **This mod will not activate without the loader.** Mod managers do not install it automatically.
+
+[Download data-v3](https://github.com/CowboyBingus/ReinforcementBeaconsFixed/releases/tag/data-v3)
 
 Centers your queued reinforcement pod over the selected beacon. Solo automatic reinforcements use the original position sampled when the automatic reinforcement begins.
 
@@ -22,7 +25,7 @@ Initial drops and unsupported modes remain unchanged. Placement replaces the ran
 
 ## Compatibility
 
-Bingus Shared Loader **loader-v2 / API 1** is required. Its former name was Shared Mod Loader. The manager GUIDs and internal Lua resource names remain stable across the rename, allowing the current module-only Better Stratagem Bounce and Hellpod Steering Unlocked packages to coexist.
+Bingus Shared Loader **loader-v2 or newer / API 1** is required. Its former name was Shared Mod Loader. The manager GUIDs and internal Lua resource names remain stable across the rename, allowing the current module-only Better Stratagem Bounce and Hellpod Steering Unlocked packages to coexist.
 
 Remove previous Reinforcement Beacon Fix packages before installing this renamed release. The withdrawn native prototypes are excluded from this project and from the loader's registration list.
 

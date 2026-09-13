@@ -12,7 +12,7 @@ from package import package_release
 
 ROOT=Path(__file__).resolve().parents[1]
 MODULE='mods/cowboybingus/reinforcement_beacon_fix_data'
-REVISION='data-v3'
+REVISION='data-v4'
 FORBIDDEN=('VirtualAlloc','VirtualProtect','FlushInstructionCache','CreateRemoteThread',
            'RtlAddFunctionTable','RtlDeleteFunctionTable','InterlockedCompareExchange','LoadLibrary')
 
@@ -50,7 +50,7 @@ def main():
             [ROOT/'src'/n for n in ('windows_api.lua','spawn_data.lua','archive_loader.lua')]}}
     release=package_release(ROOT,build,report)
     tests+=run([sys.executable,ROOT/'tests/test_data_package.py',release])
-    report['release']={'path':str(release.relative_to(ROOT)),'sha256':sha(release.read_bytes())}
+    report['release']={'path':Path(os.path.relpath(release,ROOT)).as_posix(),'sha256':sha(release.read_bytes())}
     (build/'build-report.json').write_text(json.dumps(report,indent=2)+'\n')
     (build/'offline-tests.txt').write_text(tests)
     (build/'release-status.json').write_text(json.dumps({'revision':REVISION,'status':report['status'],

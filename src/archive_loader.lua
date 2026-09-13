@@ -23,7 +23,8 @@ return function(create_api,patch,build)
     end
     local ok,api,game,exe=pcall(function()
         local loader=rawget(_G,'CowboyBingusModLoader')
-        assert(loader and loader.api==1,'Bingus Shared Loader API 1 is required')
+        assert(type(loader)=='table' and type(loader.api)=='number' and loader.api>=1,
+            'Bingus Shared Loader API 1 or newer is required')
         local api=create_api()
         local game,exe=api.module('game.dll'),api.module(nil)
         assert(game and exe,'Required modules unavailable')

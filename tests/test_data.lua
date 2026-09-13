@@ -104,16 +104,27 @@ for _,case in ipairs({'success','changed','readonly','partial','remote','remote_
 end
 patch.snapshot=original_snapshot
 -- Archive startup enforces the external loader and preserves all update returns.
-local install=assert(loadfile(source..'/archive_loader.lua'))()
-local checks=0
-local env=setmetatable({print=function()end,os={getenv=function()end},
-    CowboyBingusModLoader={api=1},update=function(a)return a,nil,3 end},{__index=_G})
-env._G=env
-setfenv(install,env)
-local api={module=function(n)return n or 'exe'end,module_hash=function(n)return n end}
-install(function()return api end,{apply=function()checks=checks+1;return true,'waiting',false end},
-    {revision='test',game_sha256='game.dll',exe_sha256='exe'})
-local a,b,c=env.update(4)
-assert(a==4 and b==nil and c==3 and checks==2)
-assert(select('#',env.update(4))==3)
-print('PASS: beacon correction, three synthetic solo scenarios, guarded eight-byte writes, rollback, exclusions and loader returns')
+local function test_loader(loader,accepted)
+    local install=assert(loadfile(source..'/archive_loader.lua'))()
+    local checks=0
+    local env=setmetatable({print=function()end,os={getenv=function()end},
+        CowboyBingusModLoader=loader,update=function(a)return a,nil,3 end},{__index=_G})
+    env._G=env
+    setfenv(install,env)
+    local previous=env.update
+    local api={module=function(n)return n or 'exe'end,module_hash=function(n)return n end}
+    install(function()return api end,{apply=function()checks=checks+1;return true,'waiting',false end},
+        {revision='test',game_sha256='game.dll',exe_sha256='exe'})
+    local a,b,c=env.update(4)
+    assert(a==4 and b==nil and c==3 and checks==(accepted and 2 or 0))
+    assert(select('#',env.update(4))==3)
+    if not accepted then
+        assert(env.update==previous and not env.ReinforcementBeaconFixData.active)
+        assert(env.ReinforcementBeaconFixData.status:find('Bingus Shared Loader',1,true))
+    end
+end
+for _,loader in ipairs({{api=1},{api=1,version=7},{api=2,version=7},{api=99,version=100}}) do
+    test_loader(loader,true)
+end
+for _,loader in ipairs({false,{}, {api=0,version=100},{api='1',version=100}}) do test_loader(loader,false) end
+print('PASS: beacon correction, three synthetic solo scenarios, guarded eight-byte writes, rollback, exclusions and minimum/newer loader API returns')

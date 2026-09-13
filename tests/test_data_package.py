@@ -14,7 +14,7 @@ with zipfile.ZipFile(sys.argv[1]) as z:
     assert meta['Name']=='Reinforcement Beacons Fixed'
     assert meta['IconPath']==meta['Options'][0]['Image']=='thumbnail.png'
     assert z.read('thumbnail.png').startswith(b'\x89PNG\r\n\x1a\n')
-    assert report['revision']=='data-v3' and report['requires'][0]['revision']=='loader-v2'
+    assert report['revision']=='data-v4' and report['requires'][0]['revision']=='loader-v2'
     for path,digest in report['files'].items():assert hashlib.sha256(z.read(path)).hexdigest().upper()==digest
     data=z.read('data/'+ARCHIVE)
     assert struct.unpack_from('<III',data)==(0xF0000011,1,1)

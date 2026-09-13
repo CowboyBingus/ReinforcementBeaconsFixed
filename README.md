@@ -7,13 +7,13 @@
 >
 > **Arsenal (default priority): place Bingus Shared Loader LAST, at the bottom of the load order**, then **Purge → Deploy**. If you enabled first-mod priority, place the loader first instead.
 
-[Download data-v3](https://github.com/CowboyBingus/ReinforcementBeaconsFixed/releases/tag/data-v3)
+[Published data-v3](https://github.com/CowboyBingus/ReinforcementBeaconsFixed/releases/tag/data-v3) · The data-v4 compatibility update is available in this repository; a release ZIP has not been published.
 
 Centers your queued reinforcement pod over the selected beacon. Solo automatic reinforcements use the original position sampled when the automatic reinforcement begins.
 
 **Install:** Close Helldivers 2. Import `BingusSharedLoader.zip` and `ReinforcementBeaconsFixed.zip` into **HDArsenal** or **HD2MM**, enable both, then deploy. When upgrading, replace the previous entries and **Purge → Deploy** to remove old installed archives. Use one manager. See [installation](INSTALL.txt).
 
-This is the **data-v3 prerelease**, for Steam build **24826606** / EXE **1.8.45317.0**. It fixes an association failure involving teammate-owned beacons and retains startup recovery from data-v2.
+This is the **data-v4 prerelease**, for Steam build **24826606** / EXE **1.8.45317.0**. It accepts newer shared-loader APIs and retains the data-v3 teammate-owned beacon fix and data-v2 startup recovery.
 
 Each diver needs the mod and loader on their own client. Installing it only on the host does not correct an unmodded teammate's pod.
 
@@ -27,7 +27,7 @@ Initial drops and unsupported modes remain unchanged. Placement replaces the ran
 
 ## Compatibility
 
-Bingus Shared Loader **loader-v2 or newer / API 1** is required. Its former name was Shared Mod Loader. The manager GUIDs and internal Lua resource names remain stable across the rename, allowing the current module-only Better Stratagem Bounce and Hellpod Steering Unlocked packages to coexist.
+Bingus Shared Loader **loader-v2 or newer / API 1 or newer** is required. Its former name was Shared Mod Loader. The manager GUIDs and internal Lua resource names remain stable across the rename, allowing the current module-only Better Stratagem Bounce and Hellpod Steering Unlocked packages to coexist.
 
 Remove previous Reinforcement Beacon Fix packages before installing this renamed release. The withdrawn native prototypes are excluded from this project and from the loader's registration list.
 

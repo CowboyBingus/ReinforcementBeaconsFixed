@@ -1,4 +1,13 @@
-# Reinforcement Beacons Fixed — data-v3 prerelease
+# Reinforcement Beacons Fixed — release notes
+
+## data-v4 — loader compatibility candidate
+
+Accept API 1 or newer instead of requiring exactly API 1. Missing, malformed
+and older API metadata still fail. Regression tests exercise current and
+newer loaders and preserve update callback returns. Gameplay behavior is
+unchanged from data-v3; this candidate has not been published as a release.
+
+## data-v3 prerelease
 
 Renamed from Reinforcement Beacon Fix, with matching banner and square manager artwork. Existing manager and module identifiers are preserved.
 

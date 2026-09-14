@@ -5,7 +5,9 @@
 Accept API 1 or newer instead of requiring exactly API 1. Missing, malformed
 and older API metadata still fail. Regression tests exercise current and
 newer loaders and preserve update callback returns. Gameplay behavior is
-unchanged from data-v3; this candidate has not been published as a release.
+unchanged from data-v3; in-game validation remains pending.
+
+[Download data-v4](https://github.com/CowboyBingus/ReinforcementBeaconsFixed/releases/tag/data-v4).
 
 ## data-v3 prerelease
 

@@ -7,7 +7,7 @@
 >
 > **Arsenal (default priority): place Bingus Shared Loader LAST, at the bottom of the load order**, then **Purge → Deploy**. If you enabled first-mod priority, place the loader first instead.
 
-[Published data-v3](https://github.com/CowboyBingus/ReinforcementBeaconsFixed/releases/tag/data-v3) · The data-v4 compatibility update is available in this repository; a release ZIP has not been published.
+[Download data-v4](https://github.com/CowboyBingus/ReinforcementBeaconsFixed/releases/tag/data-v4).
 
 Centers your queued reinforcement pod over the selected beacon. Solo automatic reinforcements use the original position sampled when the automatic reinforcement begins.
 

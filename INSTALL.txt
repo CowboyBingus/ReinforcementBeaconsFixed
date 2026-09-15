@@ -1,4 +1,4 @@
-Reinforcement Beacons Fixed — data-v4 prerelease
+Reinforcement Beacons Fixed - v4
 
 Requires Bingus Shared Loader loader-v2 or newer / API 1 or newer.
 data-v4 accepts newer loader APIs; gameplay behavior is unchanged from data-v3.
@@ -7,7 +7,7 @@ Supported: Steam build 24826606 / EXE 1.8.45317.0.
 1. Close Helldivers 2.
 2. Remove or replace the previous Reinforcement Beacon Fix / Reinforcement
    Beacons Fixed entry in HDArsenal or HD2MM. Use only one manager.
-3. Import ReinforcementBeaconsFixed.zip and BingusSharedLoader.zip.
+3. Import Reinforcement-Beacons-Fixed-v4.zip and Bingus-Shared-Loader-v9.zip.
    The loader is a separate download; managers do not install it automatically.
 4. Enable both packages, then Purge and Deploy. Importing alone can leave
    the previous version's archive in the game directory.

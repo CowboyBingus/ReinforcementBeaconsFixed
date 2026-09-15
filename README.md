@@ -3,7 +3,7 @@
 # Reinforcement Beacons Fixed
 
 > [!IMPORTANT]
-> **Bingus Shared Loader is now a separate required download.** [Download the latest loader](https://github.com/CowboyBingus/BingusSharedLoader/releases/latest), import `BingusSharedLoader.zip` into Arsenal or HD2MM, and enable it alongside Reinforcement Beacons Fixed before deploying. **This mod will not activate without the loader.** Mod managers do not install it automatically.
+> **Bingus Shared Loader is now a separate required download.** [Download the latest loader](https://github.com/CowboyBingus/BingusSharedLoader/releases/latest), import `Bingus-Shared-Loader-v9.zip` into Arsenal or HD2MM, and enable it alongside Reinforcement Beacons Fixed before deploying. **This mod will not activate without the loader.** Mod managers do not install it automatically.
 >
 > **Arsenal (default priority): place Bingus Shared Loader LAST, at the bottom of the load order**, then **Purge → Deploy**. If you enabled first-mod priority, place the loader first instead.
 
@@ -11,9 +11,9 @@
 
 Centers your queued reinforcement pod over the selected beacon. Solo automatic reinforcements use the original position sampled when the automatic reinforcement begins.
 
-**Install:** Close Helldivers 2. Import `BingusSharedLoader.zip` and `ReinforcementBeaconsFixed.zip` into **HDArsenal** or **HD2MM**, enable both, then deploy. When upgrading, replace the previous entries and **Purge → Deploy** to remove old installed archives. Use one manager. See [installation](INSTALL.txt).
+**Install:** Close Helldivers 2. Import `Bingus-Shared-Loader-v9.zip` and `Reinforcement-Beacons-Fixed-v4.zip` into **HDArsenal** or **HD2MM**, enable both, then deploy. When upgrading, replace the previous entries and **Purge → Deploy** to remove old installed archives. Use one manager. See [installation](INSTALL.txt).
 
-This is the **data-v4 prerelease**, for Steam build **24826606** / EXE **1.8.45317.0**. It accepts newer shared-loader APIs and retains the data-v3 teammate-owned beacon fix and data-v2 startup recovery.
+This is the **data-v4 release**, for Steam build **24826606** / EXE **1.8.45317.0**. It accepts newer shared-loader APIs and retains the data-v3 teammate-owned beacon fix and data-v2 startup recovery.
 
 Each diver needs the mod and loader on their own client. Installing it only on the host does not correct an unmodded teammate's pod.
 

@@ -11,7 +11,7 @@ with zipfile.ZipFile(sys.argv[1]) as z:
     meta=json.loads(z.read('manifest.json'));report=json.loads(z.read('ReinforcementBeaconsFixed-manifest.json'))
     assert meta['Version']==1 and meta['Guid']=='80a03e3b-a671-4e54-a2ce-52c35bb64c91'
     assert meta['Options'][0]['Include']==['data']
-    assert meta['Name']=='Reinforcement Beacons Fixed'
+    assert meta['Name']=='Reinforcement Beacons Fixed - v4'
     assert meta['IconPath']==meta['Options'][0]['Image']=='thumbnail.png'
     assert z.read('thumbnail.png').startswith(b'\x89PNG\r\n\x1a\n')
     assert report['revision']=='data-v4' and report['requires'][0]['revision']=='loader-v2'

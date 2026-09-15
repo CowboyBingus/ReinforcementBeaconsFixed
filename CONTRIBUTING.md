@@ -9,7 +9,7 @@ $env:HD2_LUAJIT = (Resolve-Path 'tools/src/LuaJIT/src/luajit.exe').Path
 python -B scripts/build.py
 ```
 
-The result is `releases/ReinforcementBeaconsFixed.zip`; intermediates and test results go into `build/`. The build does not install the mod or launch the game.
+The result is `releases/Reinforcement-Beacons-Fixed-v4.zip`; intermediates and test results go into `build/`. The build does not install the mod or launch the game.
 
 Only `windows_api.lua`, `spawn_data.lua` and `archive_loader.lua` are compiled. Checks cover startup retries, mission transitions, three synthetic solo scenarios, teammate-owned beacons, ambiguous or stale associations, an eight-byte write boundary, rollback and original update return values. The final ZIP must contain one Lua resource, its manager metadata and the square artwork.
 

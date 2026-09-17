@@ -105,10 +105,19 @@ assert(ffi.cast('float*',p+0x10c)[0]==11 and ffi.cast('float*',p+0x110)[0]==22)
 assert(ffi.cast('uint32_t*',us)[0]==2 and remote[20]==0,'Beacon ownership/use flags changed')
 assert(ffi.cast('float*',p+0x114)[0]==321 and ffi.cast('float*',p+0x12c)[0]==5)
 -- A non-null invalid layout remains fatal; retries apply only to unavailable data.
+for kind=1,7 do
+    integer(m,0x40,kind);integer(p,0x2e0,3);integer(r,12,0);update()
+    integer(p,0x2e0,1);update()
+    local before=writes
+    integer(r,12,1);integer(us,0,2);integer(p,0x2e0,2)
+    number(p,0x10c,50);number(p,0x110,60);update()
+    assert(writes==before+1,'reader/writer rejected mission mode '..kind)
+end
+local completed_writes=writes
 integer(p,0x84,99);update()
 assert(env.ReinforcementBeaconFixData.status:find('Unsupported player layout',1,true))
 integer(p,0x84,2);integer(p,0x2e0,1);integer(us,0,0);update()
-integer(p,0x2e0,2);integer(us,0,1);update();assert(writes==3)
+integer(p,0x2e0,2);integer(us,0,1);update();assert(writes==completed_writes)
 pointer(globals[0x276C190],0,1)
 local ok,message=pcall(patch.snapshot,api,game,exe)
 assert(not ok and tostring(message):find('Invalid spawn data pointer',1,true),'Invalid non-null pointer treated as startup')

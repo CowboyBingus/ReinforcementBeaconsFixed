@@ -16,6 +16,11 @@ local b=snapshot(2);beacon(b,50,1)
 local plan=assert(patch.plan(b,tracker))
 assert(plan.kind=='beacon' and plan.target[1]==10 and plan.target[2]==20)
 assert(#plan.bytes==8)
+for mode=1,7 do
+    local t={};local before=snapshot(1);before.mode=mode;beacon(before,50,0);patch.plan(before,t)
+    local now=snapshot(2);now.mode=mode;beacon(now,50,1)
+    assert(patch.plan(now,t),'reinforcement rejected valid mission mode '..mode)
+end
 -- Synthetic regression: local use_bit=0; a teammate-owned beacon
 -- retains used=2 throughout the local queue commit.
 local remote_before=snapshot(1)
@@ -68,9 +73,20 @@ for _,row in ipairs(trace) do
     end
 end
 assert(corrections==3,'Expected all three synthetic solo scenarios')
+-- Solo death anchors must also work in the live-reported defense mode.
+tracker={};corrections=0
+for _,row in ipairs(trace) do
+    row.mode=2
+    local plan=patch.plan(row,tracker)
+    if plan then
+        assert(plan.kind=='solo' and plan.target[1]==tracker.anchor.source[1] and plan.target[2]==tracker.anchor.source[2])
+        tracker.pending=plan;corrections=corrections+1
+    end
+end
+assert(corrections==3,'Defense mode lost solo death anchors')
 -- Exercise the guarded write with unrelated bytes, Z and countdown as sentinels.
 local original_snapshot=patch.snapshot
-for _,case in ipairs({'success','changed','readonly','partial','remote','remote_changed','remote_owner_changed'}) do
+for _,case in ipairs({'success','changed','mode_changed','readonly','partial','remote','remote_changed','remote_owner_changed'}) do
     local remote=case:find('remote',1,true)~=nil
     local t={};local before=snapshot(1);beacon(before,50,remote and 2 or 0,10,20,not remote);patch.plan(before,t)
     local now=snapshot(2);beacon(now,50,remote and 2 or 1,10,20,not remote);now.address=0x10010c
@@ -81,6 +97,7 @@ for _,case in ipairs({'success','changed','readonly','partial','remote','remote_
         reads=reads+1
         local s=snapshot(2);beacon(s,50,remote and 2 or 1,10,20,not remote);s.address=now.address
         if reads==2 and case=='changed' then s.state=3 end
+        if reads==2 and case=='mode_changed' then s.mode=2 end
         if reads==2 and case=='remote_changed' then s.beacons[1].position[1]=11 end
         if reads==2 and case=='remote_owner_changed' then s.beacons[1].owned=true end
         return s
@@ -98,7 +115,7 @@ for _,case in ipairs({'success','changed','readonly','partial','remote','remote_
     end
     local ok=pcall(patch.apply,api,0,0,t)
     if case=='success' or case=='remote' then assert(ok and #writes==1 and t.corrections==1)
-    elseif case=='changed' or case=='remote_changed' or case=='remote_owner_changed' then assert(ok and #writes==0,case)
+    elseif case=='changed' or case=='mode_changed' or case=='remote_changed' or case=='remote_owner_changed' then assert(ok and #writes==0,case)
     elseif case=='readonly' then assert(not ok and #writes==0)
     else assert(not ok and #writes==2 and mem==now.original) end
 end

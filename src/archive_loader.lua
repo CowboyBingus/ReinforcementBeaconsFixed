@@ -8,9 +8,8 @@ return function(create_api,patch,build)
         state.status=status
         print('[ReinforcementBeaconsFixed] '..build.revision..': '..status)
         pcall(function()
-            local directory=os.getenv('LOCALAPPDATA')
-            if not directory then return end
-            local file=io.open(directory..'/ReinforcementBeaconsFixed.log','w')
+            local logger=rawget(_G,'CowboyBingusModLoader')
+            local file=logger and logger.open_log and logger.open_log('ReinforcementBeaconsFixed.log')
             if not file then return end
             file:write(build.revision..'\n'..status..'\ncorrections='..state.corrections..'\n')
             if state.last then

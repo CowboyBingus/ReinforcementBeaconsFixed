@@ -88,7 +88,8 @@ local function snapshot(api, game, exe)
     local mode = read(global(0x276C3D0,'mission_mode'),0x44)
     local snapshot = {identity=tostring(pm), address=pm+0x10C, count=count,
                       mode=u32(mode,8)>0 and u32(mode,0x40) or 0, beacons={}, automatic={}}
-    if count==0 or available==0 or snapshot.mode~=1 then return snapshot end
+    -- Native player logic accepts gameplay modes 1..7, including defense (2).
+    if count==0 or available==0 or snapshot.mode<1 or snapshot.mode>7 then return snapshot end
     stage='local_player'
     local entity_pointer=data_pointer(players,0xE8)
     local entity=read(entity_pointer,24)
@@ -173,7 +174,8 @@ function patch.plan(current, state)
     local previous=state.previous
     state.previous=current
     if not previous or previous.identity~=current.identity or previous.id~=current.id
-        or previous.count~=current.count or current.mode~=1 or not current.owned then
+        or previous.count~=current.count or previous.mode~=current.mode
+        or current.mode<1 or current.mode>7 or not current.owned then
         state.anchor,state.pending=nil,nil
         return nil,'waiting_for_reinforcement'
     end
@@ -258,7 +260,7 @@ function patch.apply(api,game,exe,state)
     end
     if fresh.identity~=current.identity or fresh.id~=current.id or fresh.unit_ref~=current.unit_ref
         or fresh.use_bit~=current.use_bit
-        or fresh.count~=current.count or fresh.mode~=1 or not fresh.owned or fresh.state~=2
+        or fresh.count~=current.count or fresh.mode~=current.mode or not fresh.owned or fresh.state~=2
         or fresh.countdown~=fresh.countdown or fresh.countdown<=0.1 or fresh.countdown>5.1
         or fresh.original~=current.original then
         return true,'spawn_changed_before_write',false

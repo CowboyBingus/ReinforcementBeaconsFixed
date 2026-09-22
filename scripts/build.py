@@ -12,7 +12,7 @@ from package import package_release
 
 ROOT=Path(__file__).resolve().parents[1]
 MODULE='mods/cowboybingus/reinforcement_beacon_fix_data'
-REVISION='data-v4.1'
+REVISION='data-v4.3'
 FORBIDDEN=('VirtualAlloc','VirtualProtect','FlushInstructionCache','CreateRemoteThread',
            'RtlAddFunctionTable','RtlDeleteFunctionTable','InterlockedCompareExchange','LoadLibrary')
 
@@ -40,10 +40,10 @@ def main():
         'description':'Centers queued reinforcement pods over the beacon, and solo auto-reinforcements over their original anchor.',
         'game_exe_sha256':EXE_SHA,'game_dll_sha256':GAME_DLL_SHA,'deployment_files':files,
         'files':{p:sha((ROOT/p).read_bytes()) for p in files.values()},
-        'requires':[{'name':'Bingus Shared Loader','api':1,'revision':'loader-v14'}],
-        'module':MODULE,'runtime_verified':False,'status':'remote_beacon_regression_verified_gameplay_pending',
+        'requires':[{'name':'Bingus Shared Loader','api':1,'revision':'loader-v2'}],
+        'module':MODULE,'runtime_verified':False,'status':'current_auto_anchor_regression_verified_gameplay_pending',
         'executable_memory_changed':False,'custom_dlls':0,'boot_replaced':False,
-        'write':{'target':'local player pending spawn XY','game_global_rva':'0x276C190',
+        'write':{'target':'local player pending spawn XY','game_global_rva':'0x3326468',
                  'offset':'0x10C','bytes':8,'protection':'existing MEM_PRIVATE/PAGE_READWRITE only'},
         'offline_tests':tests.strip(),
         'source_sha256':{p.relative_to(ROOT).as_posix():sha(p.read_bytes()) for p in

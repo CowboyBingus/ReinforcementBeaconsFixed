@@ -12,7 +12,7 @@ local function region(address,size)
     return data
 end
 local globals={}
-for _,rva in ipairs({0x276C190,0x276C3D0,0x276C6E8,0x276C838}) do
+for _,rva in ipairs({0x3326468,0x33266a0,0x33269c0,0x3326b20}) do
     globals[rva]=region(game+rva,8)
 end
 local p,m,e,r,q=region(pm,0x440),region(mode,0x44),region(entity,24),region(rm,0x58),region(pos,0x60)
@@ -56,17 +56,17 @@ update();update()
 assert(env.ReinforcementBeaconFixData.status:find('waiting_for_game_data',1,true),
     'Null startup pointer became a permanent failure: '..env.ReinforcementBeaconFixData.status)
 assert(writes==0)
-pointer(globals[0x276C190],0,pm)
+pointer(globals[0x3326468],0,pm)
 integer(p,0x84,2);integer(p,0x88,2);integer(p,0x2e0,3);integer(p,0x3a8,0x7fff)
 number(p,0x12c,5);number(p,0x114,321)
 update();assert(writes==0)
-pointer(globals[0x276C3D0],0,mode)
+pointer(globals[0x33266a0],0,mode)
 update() -- Ship/mission mode has not initialized.
 integer(m,8,1);integer(m,0x40,1)
 update() -- Player entity has not initialized.
 pointer(p,0xe8,entity);integer(e,8,5);e[20]=1
 update() -- Reinforcement manager has not initialized.
-pointer(globals[0x276C6E8],0,rm);pointer(globals[0x276C838],0,pos)
+pointer(globals[0x33269c0],0,rm);pointer(globals[0x3326b20],0,pos)
 update();assert(writes==0)
 unreadable=true;update();assert(writes==0);unreadable=false
 update() -- An unreadable transition must also recover.
@@ -85,8 +85,8 @@ assert(writes==1 and env.ReinforcementBeaconFixData.corrections==1,'Did not reco
 assert(ffi.cast('float*',p+0x10c)[0]==11 and ffi.cast('float*',p+0x110)[0]==22)
 assert(ffi.cast('float*',p+0x114)[0]==321 and ffi.cast('float*',p+0x12c)[0]==5)
 -- Teardown/reload must discard cached associations, including a previously centered spawn.
-pointer(globals[0x276C190],0,0);update()
-pointer(globals[0x276C190],0,pm);update();assert(writes==1)
+pointer(globals[0x3326468],0,0);update()
+pointer(globals[0x3326468],0,pm);update();assert(writes==1)
 integer(p,0x2e0,3);update()
 integer(p,0x2e0,1);integer(us,0,0);update()
 integer(p,0x2e0,2);integer(us,0,1);number(p,0x10c,50);number(p,0x110,60);update()
@@ -114,11 +114,52 @@ for kind=1,7 do
     assert(writes==before+1,'reader/writer rejected mission mode '..kind)
 end
 local completed_writes=writes
+-- Build 25327279's automatic reinforcement producer compares and creates type
+-- 0x7C (ACCC96 / ACCEC5). Type 0x7A now belongs to another stratagem. Exercise
+-- the real reader and wrapper, rather than feeding preclassified plan rows.
+local sm,automatic,camera,owner=0x75000000,0x76000000,0x77000000,0x78000000
+local stratagems=region(sm,0x80);local rows=region(automatic,128);local cam=region(camera,0x48)
+for rva,address in pairs({[0x33266b0]=sm,[0x346d560]=camera,[0x346bf98]=owner}) do
+    pointer(region(game+rva,8),0,address)
+end
+pointer(stratagems,0x78,automatic)
+integer(p,0x84,1);integer(p,0x88,1);integer(p,0x2e0,3);integer(r,12,0)
+integer(m,0x40,1);integer(stratagems,0x34,0);integer(p,0x3a8,0x7fff)
+number(cam,0x3c,11);number(cam,0x40,22);number(cam,0x44,3)
+update()
+integer(p,0x2e0,1);update()
+integer(stratagems,0x34,1);integer(rows,12,0x7a)
+number(rows,16,70);number(rows,20,80);number(rows,24,30)
+assert(#patch.snapshot(api,game,exe).automatic==0,'Obsolete auto-anchor type was accepted')
+update();assert(not env.ReinforcementBeaconFixData.anchor and writes==completed_writes)
+integer(stratagems,0x34,2);integer(rows,64+12,0x7c)
+number(rows,64+16,90);number(rows,64+20,100);number(rows,64+24,30)
+local current=patch.snapshot(api,game,exe)
+assert(#current.automatic==1 and current.automatic[1].position[1]==90,
+    'Current automatic reinforcement anchor was not recognized')
+update()
+assert(env.ReinforcementBeaconFixData.anchor and env.ReinforcementBeaconFixData.anchor.source[1]==11)
+-- Moving the source later must not move the saved death anchor. The queue is
+-- scattered again around its beacon; only XY is restored to the frozen source.
+number(cam,0x3c,500);number(cam,0x40,600)
+pointer(es,0,entity);integer(e,8,77);e[20]=1
+integer(r,12,1);integer(us,0,1);number(xyz,0,90);number(xyz,4,100)
+integer(p,0x2e0,2);number(p,0x10c,120);number(p,0x110,130)
+update()
+assert(writes==completed_writes+1 and env.ReinforcementBeaconFixData.last.kind=='solo')
+assert(ffi.cast('float*',p+0x10c)[0]==11 and ffi.cast('float*',p+0x110)[0]==22,
+    'Solo correction followed the scattered beacon or moving source')
+assert(ffi.cast('float*',p+0x114)[0]==321 and ffi.cast('float*',p+0x12c)[0]==5)
+assert(ffi.cast('uint32_t*',us)[0]==1 and e[20]==1,'Solo correction changed use flags or ownership')
+update();assert(writes==completed_writes+1,'Solo correction repeated for the same queue')
+integer(p,0x2e0,3);integer(r,12,0);integer(stratagems,0x34,0);update()
+assert(not env.ReinforcementBeaconFixData.anchor and not env.ReinforcementBeaconFixData.pending)
+completed_writes=writes
 integer(p,0x84,99);update()
 assert(env.ReinforcementBeaconFixData.status:find('Unsupported player layout',1,true))
 integer(p,0x84,2);integer(p,0x2e0,1);integer(us,0,0);update()
 integer(p,0x2e0,2);integer(us,0,1);update();assert(writes==completed_writes)
-pointer(globals[0x276C190],0,1)
+pointer(globals[0x3326468],0,1)
 local ok,message=pcall(patch.snapshot,api,game,exe)
 assert(not ok and tostring(message):find('Invalid spawn data pointer',1,true),'Invalid non-null pointer treated as startup')
 print('PASS: null startup, staged initialization, unreadable transition, correction, mission reload and fatal-layout protection')

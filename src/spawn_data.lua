@@ -80,12 +80,12 @@ local function snapshot(api, game, exe)
         end
         return nil
     end
-    local pm = global(0x276C190,'player_manager')
+    local pm = global(0x3326468,'player_manager')
     assert(api.writable_data(pm,0x440), 'Player manager is not private writable data')
     local players = read(pm,0x440)
     local count, available = u32(players,0x84),u32(players,0x88)
     assert(count<=4 and available<=4, 'Unsupported player layout')
-    local mode = read(global(0x276C3D0,'mission_mode'),0x44)
+    local mode = read(global(0x33266a0,'mission_mode'),0x44)
     local snapshot = {identity=tostring(pm), address=pm+0x10C, count=count,
                       mode=u32(mode,8)>0 and u32(mode,0x40) or 0, beacons={}, automatic={}}
     -- Native player logic accepts gameplay modes 1..7, including defense (2).
@@ -101,7 +101,7 @@ local function snapshot(api, game, exe)
     snapshot.unit_ref=u32(players,0x3A8)
     assert(snapshot.use_bit<32, 'Unsupported player-use bit')
     if not snapshot.owned then return snapshot end
-    local rm, posm = global(0x276C6E8,'reinforcement_manager'),global(0x276C838,'position_manager')
+    local rm, posm = global(0x33269c0,'reinforcement_manager'),global(0x3326b20,'position_manager')
     local reinforcement, positions = read(rm,0x58),read(posm,0x60)
     local active=u32(reinforcement,12)
     assert(active<=128 and active<=u32(reinforcement,8), 'Unsupported reinforcement layout')
@@ -122,7 +122,7 @@ local function snapshot(api, game, exe)
         end
     end
     if count~=1 then return snapshot end
-    local sm=global(0x276C3E0,'automatic_anchor_manager')
+    local sm=global(0x33266b0,'automatic_anchor_manager')
     local stratagems=read(sm,0x80)
     local n=u32(stratagems,0x34)
     assert(n<=512, 'Unsupported active stratagem count')
@@ -130,22 +130,23 @@ local function snapshot(api, game, exe)
         local data=data_pointer(stratagems,0x78)
         for i=0,n-1 do
             local row=read(data+i*64,64)
-            if u32(row,12)==0x7A then
+            -- Current automatic-reinforcement producer ACCC96 / ACCEC5.
+            if u32(row,12)==0x7C then
                 local v=vector(row,16)
                 if v then snapshot.automatic[#snapshot.automatic+1]={
                     key=row:sub(17,28),position=v} end
             end
         end
     end
-    -- Reproduce AB4570's unit-world-position read, without calling native code.
-    local em=global(0x276F0C0,'source_entity_manager')
-    local index=snapshot.unit_ref~=0x7fff and lookup(read(em+15866504,20),snapshot.unit_ref) or nil
+    -- Reproduce AC5BB0's unit-world-position read, without calling native code.
+    local em=global(0x346bf98,'source_entity_manager')
+    local index=snapshot.unit_ref~=0x7fff and lookup(read(em+15871688,20),snapshot.unit_ref) or nil
     if index then
         assert(index<262144, 'Entity index outside supported bound')
-        local e=read(em+15932120+24*index,24)
+        local e=read(em+15937304+24*index,24)
         local engine_ref=u32(e,12)
         stage='source_unit_registry'
-        local registry=pointer(exe+0x1A140F0)
+        local registry=pointer(exe+0x1a100f0)
         local header=read(registry,0xA8)
         local slot,generation=bit.band(engine_ref,0x3fffff),bit.rshift(engine_ref,22)
         assert(slot<u32(header,0x98), 'Unit slot outside registry')
@@ -154,10 +155,10 @@ local function snapshot(api, game, exe)
         local objects=data_pointer(header,0x88)
         local object=pointer(objects+8*slot)
         local vtable=pointer(object)
-        assert(api.distance(pointer(vtable+0xE8),exe)==0x2BCA20, 'Unsupported unit scene-graph layout')
+        assert(api.distance(pointer(vtable+0xE8),exe)==0x2bd870, 'Unsupported unit scene-graph layout')
         snapshot.source=vector(read(pointer(object+0x88)+0x30,12),0)
     else
-        snapshot.source=vector(read(global(0x2770688,'fallback_position')+0x3C,12),0)
+        snapshot.source=vector(read(global(0x346d560,'fallback_position')+0x3C,12),0)
     end
     return snapshot
 end
@@ -183,7 +184,7 @@ function patch.plan(current, state)
         state.anchor,state.pending=nil,nil
         return nil,'waiting_for_reinforcement'
     end
-    -- Automatic dummy type 0x7A exists before its reinforcement component.
+    -- Automatic dummy type 0x7C exists before its reinforcement component.
     -- Freeze the source once, so a moving corpse/camera cannot move the target later.
     if current.count==1 and (current.state==1 or current.state==2) and not state.anchor then
         for _,auto in ipairs(current.automatic) do
@@ -219,7 +220,7 @@ function patch.plan(current, state)
     end
     local beacon,association=selected[1],'used'
     if #selected==0 and current.count>1 and previous.state==1 then
-        -- AB5C40 chooses the first unused record. AB6DA0 marks it only when
+        -- AC7280 chooses the first unused record. AC83F0 marks it only when
         -- the beacon is locally owned, so a teammate's beacon can stay unused
         -- through the local queue commit. Preserve that observed selection.
         local old=first_unused(previous.beacons,mask)

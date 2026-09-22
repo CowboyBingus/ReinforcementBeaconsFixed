@@ -1,76 +1,16 @@
-TEST BUILD: mission-mode and centralized-log corrections. In-game validation pending.
+Reinforcement Beacons Fixed v4.3
 
-Requires Bingus Shared Loader v14 for the shared log folder.
+Supports Helldivers 2 Steam build 25327279 / game 1.8.45850.0.
+Requires Bingus Shared Loader v16 or newer / API 1.
+
+1. Close Helldivers 2 and use one mod manager.
+2. Replace the previous package with Reinforcement-Beacons-Fixed-v4.3.zip.
+3. Enable this package and Bingus Shared Loader.
+4. With Arsenal's default priority, put the loader last (at the bottom).
+   With first-mod priority enabled, put the loader first.
+5. Purge / Deploy, then start the game normally.
+
+To remove or change options, close the game, disable the package, and
+Purge / Deploy again. Keep the loader enabled while other mods need it.
 
 Logs: %LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs
-
-
-
-Reinforcement Beacons Fixed - v4.1
-
-
-
-Requires Bingus Shared Loader loader-v14 or newer / API 1 or newer.
-
-data-v4.1 accepts newer loader APIs; gameplay behavior is unchanged from data-v3.
-
-Supported: Steam build 24826606 / EXE 1.8.45317.0.
-
-
-
-1. Close Helldivers 2.
-
-2. Remove or replace the previous Reinforcement Beacon Fix / Reinforcement
-
-   Beacons Fixed entry in HDArsenal or HD2MM. Use only one manager.
-
-3. Import Reinforcement-Beacons-Fixed-v4.1.zip and Bingus-Shared-Loader-v14.zip.
-
-   The loader is a separate download; managers do not install it automatically.
-
-4. Enable both packages, then Purge and Deploy. Importing alone can leave
-
-   the previous version's archive in the game directory.
-
-5. Launch the game. Check %LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs/ReinforcementBeaconsFixed.log for
-
-   data-v4.1 and the correction count.
-
-
-
-Use the current module-only Bounce and Hellpod Steering packages if installed.
-
-The renamed packages retain their previous manager GUIDs and Lua resource names.
-
-Do not install renamed and older copies together.
-
-
-
-Each diver needs this mod and the loader on their own client. A host-only
-
-installation does not correct an unmodded teammate's reinforcement.
-
-
-
-The mod changes only your queued reinforcement X/Y. Solo calls target the
-
-original sampled position; teammate calls target the selected beacon.
-
-Height, countdown and descent remain native. Three prior solo tests confirmed
-
-queue correction. Data-v3's multiplayer repair passes offline tests and still
-
-needs installed verification. A small solo landing offset remains unresolved.
-
-
-
-To uninstall, disable this mod and Purge/Deploy. Keep Bingus Shared Loader
-
-enabled for any remaining dependent mods. No executable-memory patch is installed.
-
-
-
-Developed with assistance from GPT-6 Astra.
-
-Logs: %LOCALAPPDATA%\CowboyBingus\Helldivers2\Logs
-Requires Bingus Shared Loader v14 or newer for this log folder.

@@ -1,3 +1,9 @@
+# v4.3
+
+- Update compatibility for game build 25327279.
+- Fix solo reinforcement placement around the current death anchor.
+- Restore reinforcement corrections for co-op clients.
+
 # v4.1
 
 - Fixes reinforcement placement on defense and other supported mission types.

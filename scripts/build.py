@@ -12,7 +12,7 @@ from package import package_release
 
 ROOT=Path(__file__).resolve().parents[1]
 MODULE='mods/cowboybingus/reinforcement_beacon_fix_data'
-REVISION='data-v4.3'
+REVISION='data-v4.4'
 FORBIDDEN=('VirtualAlloc','VirtualProtect','FlushInstructionCache','CreateRemoteThread',
            'RtlAddFunctionTable','RtlDeleteFunctionTable','InterlockedCompareExchange','LoadLibrary')
 

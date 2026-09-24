@@ -1,3 +1,9 @@
+# v4.4
+
+- Refresh the game-build checks for Steam build 25480438.
+- Preserve solo beacon anchoring and co-op reinforcement corrections.
+- Offline builds and package checks pass; live gameplay validation remains pending.
+
 # v4.3
 
 - Update compatibility for game build 25327279.

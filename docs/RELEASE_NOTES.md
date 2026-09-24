@@ -1,3 +1,3 @@
-- Update compatibility for game build 25327279.
-- Fix solo reinforcement placement around the current death anchor.
-- Restore reinforcement corrections for co-op clients.
+- Refresh the game-build checks for Steam build 25480438.
+- Preserve solo beacon anchoring and co-op reinforcement corrections.
+- Offline builds and package checks pass; live gameplay validation remains pending.

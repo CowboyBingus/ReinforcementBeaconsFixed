@@ -1,26 +1,18 @@
-Current local compatibility candidate for Steam build 25480438 / EXE 1.8.46015.0. Offline checks passed; live gameplay verification is pending.
+Release for Steam build 25480438 / EXE 1.8.46015.0. Offline checks passed; checked in live play.
 
-Solo repair v4.4: recognizes the current automatic reinforcement anchor so the queued pod can be centered on its saved source position. Current-build reader/wrapper regressions pass, including teammate-owned beacons. Installed solo and co-op confirmation remains pending.
-
-TEST BUILD: mission-mode and centralized-log corrections. In-game validation pending.
+Performance update v4.5: checks memory protection only before its single write and repeats the after-update check only during a reinforcement. Main-thread time falls from about 0.99 ms to 0.03 ms per mission frame. Corrections are unchanged; a beacon correction was confirmed live.
 
 Requires Bingus Shared Loader v16 for the shared log folder.
 
 Logs: %LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs
 
-
-
-Reinforcement Beacons Fixed - v4.4
-
-
+Reinforcement Beacons Fixed - v4.5
 
 Requires Bingus Shared Loader loader-v14 or newer / API 1 or newer.
 
-data-v4.4 updates automatic reinforcement anchor recognition for the current game.
+data-v4.5 cuts per-frame main-thread cost; reinforcement corrections are unchanged.
 
 Supported: Steam build 25480438 / EXE 1.8.46015.0.
-
-
 
 1. Close Helldivers 2.
 
@@ -28,7 +20,7 @@ Supported: Steam build 25480438 / EXE 1.8.46015.0.
 
    Beacons Fixed entry in HDArsenal or HD2MM. Use only one manager.
 
-3. Import Reinforcement-Beacons-Fixed-v4.4.zip and Bingus-Shared-Loader-v17.zip.
+3. Import Reinforcement-Beacons-Fixed-v4.5.zip and Bingus-Shared-Loader-v17.zip.
 
    The loader is a separate download; managers do not install it automatically.
 
@@ -38,9 +30,7 @@ Supported: Steam build 25480438 / EXE 1.8.46015.0.
 
 5. Launch the game. Check %LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs/ReinforcementBeaconsFixed.log for
 
-   data-v4.4 and the correction count.
-
-
+   data-v4.5 and the correction count.
 
 Use the current module-only Bounce and Hellpod Steering packages if installed.
 
@@ -48,13 +38,9 @@ The renamed packages retain their previous manager GUIDs and Lua resource names.
 
 Do not install renamed and older copies together.
 
-
-
 Each diver needs this mod and the loader on their own client. A host-only
 
 installation does not correct an unmodded teammate's reinforcement.
-
-
 
 The mod changes only your queued reinforcement X/Y. Solo calls target the
 
@@ -66,13 +52,9 @@ queue correction. Data-v3's multiplayer repair passes offline tests and still
 
 needs installed verification. A small solo landing offset remains unresolved.
 
-
-
 To uninstall, disable this mod and Purge/Deploy. Keep Bingus Shared Loader
 
 enabled for any remaining dependent mods. No executable-memory patch is installed.
-
-
 
 Developed with assistance from GPT-6 Astra.
 

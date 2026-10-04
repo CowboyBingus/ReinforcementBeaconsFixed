@@ -1,3 +1,8 @@
-- Checks memory protection only immediately before its single write instead of on every snapshot, twice per frame; in game that query costs about 0.3 ms each.
-- Repeats the after-update check only while a reinforcement is in progress, reads the automatic stratagem rows in one read, and reuses one read buffer.
-- Measured in real play: about 0.99 ms to 0.03 ms of main-thread time per frame in missions, and 0.59 ms to 0.02 ms aboard the ship. Corrections are unchanged; a beacon correction was confirmed live.
+- Fewer memory reads per frame: 2 instead of 4 on the ship, and 9-10 instead of 14 alive in a mission.
+- Game data is decoded in place, so each frame creates less Lua garbage.
+- After an error in the game's update or another mod's, the mod puts back a pending correction, pauses and checks again once 60 frames run cleanly.
+- Eight errors close together stop the mod, and a stop puts back a pending correction it made.
+- A change of player manager between checks is noticed again.
+- An invalid position or countdown in game data counts as unavailable instead of possibly stopping the mod.
+- Requires Bingus Shared Loader v18 or newer.
+- Measured in live play: 0.021 ms per frame in client missions and 0.009 on the ship.

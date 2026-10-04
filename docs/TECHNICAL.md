@@ -1,6 +1,6 @@
 # Data-only reinforcement correction
 
-The build checks Steam build 25327279 / EXE 1.8.45850.0 through exact file hashes. The Windows adapter permits writes only to already committed, private, read/write pages. It does not allocate executable storage, change page protection or patch instructions.
+The build checks Steam build 25480438 / EXE 1.8.46015.0 through exact file hashes. The Windows adapter permits writes only to already committed, private, read/write pages. It does not allocate executable storage, change page protection or patch instructions.
 
 ## Placement boundary
 
@@ -27,6 +27,15 @@ Initial deployment, unsupported mission modes and stale identities are excluded.
 Bingus Shared Loader provides `CowboyBingusModLoader.api == 1`. The stable gameplay resource is `mods/cowboybingus/reinforcement_beacon_fix_data`; its resource hash is `0x4F1BA22DAA1EAB5C`. The manager GUID remains `80a03e3b-a671-4e54-a2ce-52c35bb64c91`. These are compatibility identifiers, independent of the display name.
 
 The gameplay package owns no boot or Wwise resource. Its update wrapper preserves the prior function and all return values. The in-VM `ReinforcementBeaconFixData` guard remains stable to prevent duplicate initialization across the rename.
+
+## Update chain
+
+The loader installs the update guard of `bingus_runtime.lua`, the family's update-chain policy, around `update` and `shutdown`; the build passes the vendored runtime to the loader. The earlier update runs outside pcall, so its errors reach the game unchanged. The mod checks once before the earlier update, and again after it only while a reinforcement is in progress.
+
+- The reader refuses an unsupported layout, and a failed write stops the correction, by raising. Either stops the mod at once, as before. Errors in the mod's own code stop it after 8 in a burst; a count starts again after 3600 error-free frames.
+- After an error in an update below it, the mod puts back the original XY of a pending correction and forgets every association. It restores only while the same player manager's spawn is still pending and its XY still holds exactly the bytes the mod wrote. Once the updates below have returned on 60 frames in a row, it checks again from a fresh start; a queue seen first after the pause is not corrected. Eight such errors in a burst stop it.
+- When the mod stops, it puts back a pending correction the same way. At shutdown it writes nothing.
+- The guard's status is in `BingusRuntime.statuses.ReinforcementBeaconsFixed`; the first failure survives shutdown.
 
 ## Validation boundaries
 

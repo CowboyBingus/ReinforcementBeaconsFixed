@@ -12,9 +12,10 @@ from package import package_release
 
 ROOT=Path(__file__).resolve().parents[1]
 MODULE='mods/cowboybingus/reinforcement_beacon_fix_data'
-REVISION='data-v4.5'
+REVISION='data-v4.6'
 FORBIDDEN=('VirtualAlloc','VirtualProtect','FlushInstructionCache','CreateRemoteThread',
            'RtlAddFunctionTable','RtlDeleteFunctionTable','InterlockedCompareExchange','LoadLibrary')
+SOURCES=('bingus_runtime.lua','bingus_memory.lua','bingus_write.lua','windows_api.lua','spawn_data.lua','archive_loader.lua')
 
 def run(args,**kwargs):
     r=subprocess.run(list(map(str,args)),capture_output=True,text=True,**kwargs)
@@ -25,13 +26,15 @@ def main():
     build=ROOT/'build';build.mkdir(exist_ok=True)
     for relative,expected in [('bin/helldivers2.exe',EXE_SHA),('data/game/game.dll',GAME_DLL_SHA)]:
         if sha((GAME/relative).read_bytes())!=expected:raise ValueError('Unsupported game build')
-    for filename in ('windows_api.lua','spawn_data.lua','archive_loader.lua'):
+    for filename in SOURCES:
         source=(ROOT/'src'/filename).read_text()
         if any(api in source for api in FORBIDDEN):raise ValueError('Executable modification API in '+filename)
     resources=build_module(ROOT,build,MODULE,'spawn_data.lua',REVISION)
     env=dict(os.environ,LUA_PATH=str(LUA.parent/'?.lua')+';;')
     tests=run([LUA,ROOT/'tests/test_data.lua',ROOT/'src',ROOT/'tests/solo_scenarios.lua'],env=env)
-    tests+=run([LUA,ROOT/'tests/test_startup.lua',ROOT/'src'],env=env)
+    tests+=run([LUA,ROOT/'tests/test_startup.lua',ROOT/'src',build],env=env)
+    # The synthetic benchmark's fixture and exact-count pass; its timing modes run by hand.
+    tests+=run([LUA,ROOT/'tests/benchmark_synthetic.lua',ROOT/'src','check'],env=env)
     (build/ARCHIVE).write_bytes(make_archive(resources))
     for suffix in ('.stream','.gpu_resources'):(build/(ARCHIVE+suffix)).write_bytes(b'')
     files={f'data/{ARCHIVE}{suffix}':f'build/{ARCHIVE}{suffix}' for suffix in ('','.stream','.gpu_resources')}
@@ -47,7 +50,7 @@ def main():
                  'offset':'0x10C','bytes':8,'protection':'existing MEM_PRIVATE/PAGE_READWRITE only'},
         'offline_tests':tests.strip(),
         'source_sha256':{p.relative_to(ROOT).as_posix():sha(p.read_bytes()) for p in
-            [ROOT/'src'/n for n in ('windows_api.lua','spawn_data.lua','archive_loader.lua')]}}
+            [ROOT/'src'/n for n in SOURCES]}}
     release=package_release(ROOT,build,report)
     tests+=run([sys.executable,ROOT/'tests/test_data_package.py',release])
     report['release']={'path':Path(os.path.relpath(release,ROOT)).as_posix(),'sha256':sha(release.read_bytes())}

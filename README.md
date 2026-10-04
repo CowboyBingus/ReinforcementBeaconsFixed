@@ -1,13 +1,13 @@
 > Release for Steam build 25480438 / EXE 1.8.46015.0. Offline checks passed; checked in live play.
 
-Performance update v4.5: checks memory protection only before its single write and repeats the after-update check only during a reinforcement. Main-thread time falls from about 0.99 ms to 0.03 ms per mission frame. Corrections are unchanged; a beacon correction was confirmed live.
+Performance and resilience update v4.6: fewer memory reads per frame, less Lua garbage, and a pause instead of a stop after errors elsewhere in the update chain. Measured in live play: 0.021 ms per frame in client missions and 0.009 on the ship. Corrections are unchanged; a beacon correction was confirmed live on earlier releases.
 
 ![Reinforcement Beacons Fixed](assets/banner.png)
 
 # Reinforcement Beacons Fixed
 
 > [!IMPORTANT]
-> **Bingus Shared Loader is now a separate required download.** [Download the latest loader](https://github.com/CowboyBingus/BingusSharedLoader/releases/latest), import `Bingus-Shared-Loader-v17.zip` into Arsenal or HD2MM, and enable it alongside Reinforcement Beacons Fixed before deploying. **This mod will not activate without the loader.** Mod managers do not install it automatically.
+> **Bingus Shared Loader is now a separate required download.** [Download the latest loader](https://github.com/CowboyBingus/BingusSharedLoader/releases/latest), import Bingus Shared Loader v18 or newer into Arsenal or HD2MM, and enable it alongside Reinforcement Beacons Fixed before deploying. **This mod will not activate without the loader.** Mod managers do not install it automatically.
 >
 > **Arsenal (default priority): place Bingus Shared Loader LAST, at the bottom of the load order**, then **Purge → Deploy**. If you enabled first-mod priority, place the loader first instead.
 
@@ -15,9 +15,9 @@ Performance update v4.5: checks memory protection only before its single write a
 
 Centers your queued reinforcement pod over the selected beacon. Solo automatic reinforcements use the original position sampled when the automatic reinforcement begins.
 
-**Install:** Close Helldivers 2. Import `Bingus-Shared-Loader-v17.zip` and `Reinforcement-Beacons-Fixed-v4.5.zip` into **HDArsenal** or **HD2MM**, enable both, then deploy. When upgrading, replace the previous entries and **Purge → Deploy** to remove old installed archives. Use one manager. See [installation](INSTALL.txt).
+**Install:** Close Helldivers 2. Import Bingus Shared Loader (v18 or newer) and `Reinforcement-Beacons-Fixed-v4.6.zip` into **HDArsenal** or **HD2MM**, enable both, then deploy. When upgrading, replace the previous entries and **Purge → Deploy** to remove old installed archives. Use one manager. See [installation](INSTALL.txt).
 
-This is the **data-v4.5 release**, for Steam build **25480438** / EXE **1.8.46015.0**. It accepts newer shared-loader APIs and retains the data-v3 teammate-owned beacon fix and data-v2 startup recovery.
+This is the **data-v4.6 release**, for Steam build **25480438** / EXE **1.8.46015.0**. It accepts newer shared-loader APIs and retains the data-v3 teammate-owned beacon fix and data-v2 startup recovery.
 
 Each diver needs the mod and loader on their own client. Installing it only on the host does not correct an unmodded teammate's pod.
 
@@ -31,7 +31,7 @@ Initial drops and unsupported modes remain unchanged. Placement replaces the ran
 
 ## Compatibility
 
-Bingus Shared Loader **loader-v2 or newer / API 1 or newer** is required. Its former name was Shared Mod Loader. The manager GUIDs and internal Lua resource names remain stable across the rename, allowing the current module-only Better Stratagem Bounce and Hellpod Steering Unlocked packages to coexist.
+Bingus Shared Loader **v18 or newer** is required (v19 is current); the module's own load check accepts loader-v2 / API 1 or newer. Its former name was Shared Mod Loader. The manager GUIDs and internal Lua resource names remain stable across the rename, allowing the current module-only Better Stratagem Bounce and Hellpod Steering Unlocked packages to coexist.
 
 Remove previous Reinforcement Beacon Fix packages before installing this renamed release. The withdrawn native prototypes are excluded from this project and from the loader's registration list.
 
@@ -46,6 +46,10 @@ The runtime log is `%LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs/ReinforcementBe
 
 [Build instructions](CONTRIBUTING.md) · [Technical notes](docs/TECHNICAL.md) · [Third-party inputs](THIRD_PARTY.md) · [Release notes](docs/RELEASE_NOTES.md)
 
-**AI disclosure:** GPT-6 Astra assisted with research, implementation, debugging, documentation and artwork.
+**AI disclosure:** GPT-6 Astra assisted with research, implementation, debugging, documentation and artwork. Claude Opus 5.5 assisted with research, implementation, tests and documentation.
 
-Current version: **v4.5**, for game build **25480438**. See [changes](CHANGELOG.md) and [validation coverage](docs/MIGRATION_VALIDATION.md).
+Current version: **v4.6**, for game build **25480438**. See [changes](CHANGELOG.md) and [validation coverage](docs/MIGRATION_VALIDATION.md).
+
+## License
+
+Zero-Clause BSD (0BSD): use, copy, modify and distribute for any purpose, with no conditions. See `LICENSE`.

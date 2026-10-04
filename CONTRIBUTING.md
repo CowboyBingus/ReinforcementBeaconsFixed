@@ -11,7 +11,7 @@ python -B scripts/build.py
 
 The result is `releases/Reinforcement-Beacons-Fixed-v4.zip`; intermediates and test results go into `build/`. The build does not install the mod or launch the game.
 
-Only `windows_api.lua`, `spawn_data.lua` and `archive_loader.lua` are compiled. Checks cover startup retries, mission transitions, three synthetic solo scenarios, teammate-owned beacons, ambiguous or stale associations, an eight-byte write boundary, rollback and original update return values. The final ZIP must contain one Lua resource, its manager metadata and the square artwork.
+Only `bingus_runtime.lua` (the shared memory runtime, kept byte-identical across mods), `windows_api.lua`, `spawn_data.lua` and `archive_loader.lua` are compiled. Checks cover startup retries, mission transitions, three synthetic solo scenarios, teammate-owned beacons, ambiguous or stale associations, an eight-byte write boundary, rollback and original update return values. The build also runs `tests/benchmark_synthetic.lua` in `check` mode: exact reads per update for 23 synthetic populations up to the supported limits, with every fixture store and read inside its allocations. Its timing modes (`jit`, `off`) run by hand and print milliseconds per update. The final ZIP must contain one Lua resource, its manager metadata and the square artwork.
 
 The source fixtures are synthetic; they contain no recorded player identifiers, process addresses, session timestamps or live position captures. Preserve the supported hashes and layout guards when changing the runtime. A new game hash alone does not establish compatibility.
 

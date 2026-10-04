@@ -1,16 +1,14 @@
 Release for Steam build 25480438 / EXE 1.8.46015.0. Offline checks passed; checked in live play.
 
-Performance update v4.5: checks memory protection only before its single write and repeats the after-update check only during a reinforcement. Main-thread time falls from about 0.99 ms to 0.03 ms per mission frame. Corrections are unchanged; a beacon correction was confirmed live.
-
-Requires Bingus Shared Loader v16 for the shared log folder.
+Performance and resilience update v4.6: fewer memory reads per frame, less Lua garbage, and a pause instead of a stop after errors elsewhere in the update chain. Measured in live play: 0.021 ms per frame in client missions and 0.009 on the ship. Corrections are unchanged; a beacon correction was confirmed live on earlier releases.
 
 Logs: %LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs
 
-Reinforcement Beacons Fixed - v4.5
+Reinforcement Beacons Fixed - v4.6
 
-Requires Bingus Shared Loader loader-v14 or newer / API 1 or newer.
+Requires Bingus Shared Loader v18 or newer (v19 is current).
 
-data-v4.5 cuts per-frame main-thread cost; reinforcement corrections are unchanged.
+data-v4.6 cuts per-frame cost; reinforcement corrections are unchanged.
 
 Supported: Steam build 25480438 / EXE 1.8.46015.0.
 
@@ -20,7 +18,7 @@ Supported: Steam build 25480438 / EXE 1.8.46015.0.
 
    Beacons Fixed entry in HDArsenal or HD2MM. Use only one manager.
 
-3. Import Reinforcement-Beacons-Fixed-v4.5.zip and Bingus-Shared-Loader-v17.zip.
+3. Import Reinforcement-Beacons-Fixed-v4.6.zip and Bingus Shared Loader v18 or newer.
 
    The loader is a separate download; managers do not install it automatically.
 
@@ -30,7 +28,7 @@ Supported: Steam build 25480438 / EXE 1.8.46015.0.
 
 5. Launch the game. Check %LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs/ReinforcementBeaconsFixed.log for
 
-   data-v4.5 and the correction count.
+   data-v4.6 and the correction count.
 
 Use the current module-only Bounce and Hellpod Steering packages if installed.
 
@@ -56,7 +54,6 @@ To uninstall, disable this mod and Purge/Deploy. Keep Bingus Shared Loader
 
 enabled for any remaining dependent mods. No executable-memory patch is installed.
 
-Developed with assistance from GPT-6 Astra.
+Developed with assistance from GPT-6 Astra and Claude Opus 5.5.
 
 Logs: %LOCALAPPDATA%\CowboyBingus\Helldivers2\Logs
-Requires Bingus Shared Loader v17 or newer for this log folder.

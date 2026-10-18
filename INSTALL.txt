@@ -1,14 +1,14 @@
 Release for Steam build 25480438 / EXE 1.8.46015.0. Offline checks passed; checked in live play.
 
-Performance and resilience update v4.6: fewer memory reads per frame, less Lua garbage, and a pause instead of a stop after errors elsewhere in the update chain. Measured in live play: 0.021 ms per frame in client missions and 0.009 on the ship. Corrections are unchanged; a beacon correction was confirmed live on earlier releases.
+Performance update v4.6.1: between deaths the mod reads only your own spawn state, 2 memory reads per frame with no Lua garbage, and reads beacons once you are down. Measured in game: 0.028-0.032 -> 0.010-0.011 ms per frame in missions. A beacon correction was confirmed live on earlier releases; v4.6.1's corrections are checked offline only.
 
 Logs: %LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs
 
-Reinforcement Beacons Fixed - v4.6
+Reinforcement Beacons Fixed - v4.6.1
 
 Requires Bingus Shared Loader v18 or newer (v19 is current).
 
-data-v4.6 cuts per-frame cost; reinforcement corrections are unchanged.
+data-v4.6.1 cuts per-frame cost between deaths.
 
 Supported: Steam build 25480438 / EXE 1.8.46015.0.
 
@@ -18,7 +18,7 @@ Supported: Steam build 25480438 / EXE 1.8.46015.0.
 
    Beacons Fixed entry in HDArsenal or HD2MM. Use only one manager.
 
-3. Import Reinforcement-Beacons-Fixed-v4.6.zip and Bingus Shared Loader v18 or newer.
+3. Import Reinforcement-Beacons-Fixed-v4.6.1.zip and Bingus Shared Loader v18 or newer.
 
    The loader is a separate download; managers do not install it automatically.
 
@@ -28,7 +28,7 @@ Supported: Steam build 25480438 / EXE 1.8.46015.0.
 
 5. Launch the game. Check %LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs/ReinforcementBeaconsFixed.log for
 
-   data-v4.6 and the correction count.
+   data-v4.6.1 and the correction count.
 
 Use the current module-only Bounce and Hellpod Steering packages if installed.
 

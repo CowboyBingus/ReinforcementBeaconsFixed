@@ -28,8 +28,10 @@
   "src/windows_api.lua",
   "tests/benchmark_synthetic.lua",
   "tests/frame_budget.lua",
+  "tests/reference/spawn_data.lua",
   "tests/solo_scenarios.lua",
   "tests/test_data.lua",
   "tests/test_data_package.py",
+  "tests/test_idle_equivalence.lua",
   "tests/test_startup.lua"
 ]

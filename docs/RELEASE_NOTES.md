@@ -1,8 +1,1 @@
-- Fewer memory reads per frame: 2 instead of 4 on the ship, and 9-10 instead of 14 alive in a mission.
-- Game data is decoded in place, so each frame creates less Lua garbage.
-- After an error in the game's update or another mod's, the mod puts back a pending correction, pauses and checks again once 60 frames run cleanly.
-- Eight errors close together stop the mod, and a stop puts back a pending correction it made.
-- A change of player manager between checks is noticed again.
-- An invalid position or countdown in game data counts as unavailable instead of possibly stopping the mod.
-- Requires Bingus Shared Loader v18 or newer.
-- Measured in live play: 0.021 ms per frame in client missions and 0.009 on the ship.
+- Between deaths the mod reads only your own spawn state: 2 memory reads per frame instead of 9-10 alive in a mission, with no Lua garbage. Measured in game: 0.028-0.032 to 0.010-0.011 ms per frame in missions.

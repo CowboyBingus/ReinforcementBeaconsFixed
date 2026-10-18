@@ -22,6 +22,10 @@ Solo reinforcement has two randomized stages: creation of an automatic type `0x7
 
 Initial deployment, unsupported mission modes and stale identities are excluded. Missing startup pointers or transiently unavailable data reset associations and retry; invalid layouts and failed writes stop the module.
 
+## Waiting for a death
+
+Only the local player's own spawn state (player manager `+0x2E0`: 3 alive, 1 dead and queued, 2 pod pending, 0 before the first deployment) starts work. Between deaths each check reads the player-manager global and that state, two reads with no Lua allocation. When the state becomes 1 or 2 the full snapshot runs, and it keeps running every check until the state leaves 1 and 2. The death's first snapshot is compared with a baseline: the state the gate saw last (so the initial deployment, 0 to 2, stays excluded), no beacons, and the automatic rows of the last solo landing on the same player manager. A jump from alive straight to pending (3 to 2) is left unchanged, because no beacon use bits were read before it. With no solo landing seen and several automatic rows listed at the death, no anchor is captured.
+
 ## Loader contract
 
 Bingus Shared Loader provides `CowboyBingusModLoader.api == 1`. The stable gameplay resource is `mods/cowboybingus/reinforcement_beacon_fix_data`; its resource hash is `0x4F1BA22DAA1EAB5C`. The manager GUID remains `80a03e3b-a671-4e54-a2ce-52c35bb64c91`. These are compatibility identifiers, independent of the display name.

@@ -1,6 +1,6 @@
 > Release for Steam build 25480438 / EXE 1.8.46015.0. Offline checks passed; checked in live play.
 
-Performance and resilience update v4.6: fewer memory reads per frame, less Lua garbage, and a pause instead of a stop after errors elsewhere in the update chain. Measured in live play: 0.021 ms per frame in client missions and 0.009 on the ship. Corrections are unchanged; a beacon correction was confirmed live on earlier releases.
+Performance update v4.6.1: between deaths the mod reads only your own spawn state, 2 memory reads per frame with no Lua garbage, and reads beacons once you are down. Measured in game: 0.028-0.032 -> 0.010-0.011 ms per frame in missions. A beacon correction was confirmed live on earlier releases; v4.6.1's corrections are checked offline only.
 
 ![Reinforcement Beacons Fixed](assets/banner.png)
 
@@ -15,9 +15,9 @@ Performance and resilience update v4.6: fewer memory reads per frame, less Lua g
 
 Centers your queued reinforcement pod over the selected beacon. Solo automatic reinforcements use the original position sampled when the automatic reinforcement begins.
 
-**Install:** Close Helldivers 2. Import Bingus Shared Loader (v18 or newer) and `Reinforcement-Beacons-Fixed-v4.6.zip` into **HDArsenal** or **HD2MM**, enable both, then deploy. When upgrading, replace the previous entries and **Purge → Deploy** to remove old installed archives. Use one manager. See [installation](INSTALL.txt).
+**Install:** Close Helldivers 2. Import Bingus Shared Loader (v18 or newer) and `Reinforcement-Beacons-Fixed-v4.6.1.zip` into **HDArsenal** or **HD2MM**, enable both, then deploy. When upgrading, replace the previous entries and **Purge → Deploy** to remove old installed archives. Use one manager. See [installation](INSTALL.txt).
 
-This is the **data-v4.6 release**, for Steam build **25480438** / EXE **1.8.46015.0**. It accepts newer shared-loader APIs and retains the data-v3 teammate-owned beacon fix and data-v2 startup recovery.
+This is the **data-v4.6.1 release**, for Steam build **25480438** / EXE **1.8.46015.0**. It accepts newer shared-loader APIs and retains the data-v3 teammate-owned beacon fix and data-v2 startup recovery.
 
 Each diver needs the mod and loader on their own client. Installing it only on the host does not correct an unmodded teammate's pod.
 
@@ -48,7 +48,7 @@ The runtime log is `%LOCALAPPDATA%/CowboyBingus/Helldivers2/Logs/ReinforcementBe
 
 **AI disclosure:** GPT-6 Astra assisted with research, implementation, debugging, documentation and artwork. Claude Opus 5.5 assisted with research, implementation, tests and documentation.
 
-Current version: **v4.6**, for game build **25480438**. See [changes](CHANGELOG.md) and [validation coverage](docs/MIGRATION_VALIDATION.md).
+Current version: **v4.6.1**, for game build **25480438**. See [changes](CHANGELOG.md) and [validation coverage](docs/MIGRATION_VALIDATION.md).
 
 ## License
 

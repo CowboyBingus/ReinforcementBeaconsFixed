@@ -17,4 +17,4 @@ The source fixtures are synthetic; they contain no recorded player identifiers, 
 
 For combined loader/HUD/manager checks, build Bingus Shared Loader and follow its contribution guide. Offline checks do not replace multiplayer or landing tests. Test both hosting and joining before broadening the documented support.
 
-Source publication should include authored source, tests, dependency pins, documentation and the two images. Build output, caches, game resources, manager profiles and local captures are ignored. Upload release ZIPs separately. No repository-wide license has been selected.
+Source publication should include authored source, tests, dependency pins, documentation and the two images. Build output, caches, game resources, manager profiles and local captures are ignored. Upload release ZIPs separately. This repository is licensed under the BSD Zero Clause License (0BSD); see LICENSE.

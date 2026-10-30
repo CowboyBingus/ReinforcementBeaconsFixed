@@ -1,1 +1,0 @@
-- Between deaths the mod reads only your own spawn state: 2 memory reads per frame instead of 9-10 alive in a mission, with no Lua garbage. Measured in game: 0.028-0.032 to 0.010-0.011 ms per frame in missions.
